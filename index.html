@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kopano Store - POS System</title>
+    <link rel="stylesheet" href="till-point.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+
+        <header class="header">
+            <div class="logo">
+                <i class="fas fa-cash-register"></i>
+                <span>Kopano Store</span>
+            </div>
+            <div class="header-info">
+                <span class="date" id="currentDate"></span>
+                <span class="time" id="currentTime"></span>
+            </div>
+        </header>
+
+        <main class="main-content">
+           
+            <section class="cashier-section">
+                <div class="section-header">
+                    <h2><i class="fas fa-user-tie"></i> Cashier Station</h2>
+                </div>
+                
+                
+                <div class="cashier-login" id="cashierLogin">
+                    <h3>Cashier Login</h3>
+                    <div class="input-group">
+                        <label>Cashier Name</label>
+                        <input type="text" id="cashierName" placeholder="Enter your name">
+                    </div>
+                    <div class="input-group">
+                        <label>Employee ID</label>
+                        <input type="text" id="employeeId" placeholder="Enter employee ID">
+                    </div>
+                    <button class="btn-login" id="loginBtn">
+                        <i class="fas fa-sign-in-alt"></i> Start Shift
+                    </button>
+                </div>
+
+               
+                <div class="cashier-dashboard" id="cashierDashboard" style="display: none;">
+                  
+                    <div class="cashier-info">
+                        <div class="cashier-avatar">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div class="cashier-details">
+                            <span class="cashier-name" id="displayCashierName">-</span>
+                            <span class="cashier-id" id="displayEmployeeId">ID: -</span>
+                        </div>
+                        <button class="btn-logout" id="logoutBtn">
+                            <i class="fas fa-sign-out-alt"></i>
+                        </button>
+                    </div>
+
+                    
+                    <div class="transaction-summary">
+                        <h3><i class="fas fa-receipt"></i> Current Transaction</h3>
+                        
+                        <div class="transaction-items" id="transactionItems">
+                            <div class="empty-transaction">
+                                <i class="fas fa-shopping-basket"></i>
+                                <p>No items selected yet</p>
+                            </div>
+                        </div>
+
+                        <div class="transaction-details">
+                            <div class="detail-row">
+                                <span>Items:</span>
+                                <span id="itemCount">0</span>
+                            </div>
+                            <div class="detail-row">
+                                <span>Subtotal:</span>
+                                <span id="transactionSubtotal">R0.00</span>
+                            </div>
+                            <div class="detail-row">
+                                <span>Tax (10%):</span>
+                                <span id="transactionTax">R0.00</span>
+                            </div>
+                            <div class="detail-row total">
+                                <span>Total:</span>
+                                <span id="transactionTotal">R0.00</span>
+                            </div>
+                        </div>
+
+                        <div class="transaction-actions">
+                            <button class="btn-action btn-clear" id="clearTransaction">
+                                <i class="fas fa-trash"></i> Clear
+                            </button>
+                            <button class="btn-action btn-pay" id="payButton">
+                                <i class="fas fa-credit-card"></i> Pay
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+           
+            <section class="customer-section">
+                <div class="section-header">
+                    <h2><i class="fas fa-store"></i> Customer View</h2>
+                    <div class="search-box">
+                        <i class="fas fa-search"></i>
+                        <input type="text" id="searchInput" placeholder="Search products...">
+                    </div>
+                </div>
+                
+               
+                <div class="products-grid" id="productsGrid">
+                    
+                </div>
+            </section>
+        </main>
+
+        
+        <div class="modal" id="paymentModal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Payment</h3>
+                    <button class="close-modal" id="closeModal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="payment-cashier-info">
+                        <span>Served by:</span>
+                        <span id="paymentCashierName">-</span>
+                    </div>
+                    <div class="payment-total">
+                        <span>Total Amount:</span>
+                        <span class="amount" id="paymentTotal">R0.00</span>
+                    </div>
+                    <div class="payment-methods">
+                        <button class="payment-method" data-method="cash">
+                            <i class="fas fa-money-bill-wave"></i>
+                            <span>Cash</span>
+                        </button>
+                        <button class="payment-method" data-method="card">
+                            <i class="fas fa-credit-card"></i>
+                            <span>Card</span>
+                        </button>
+                        <button class="payment-method" data-method="mobile">
+                            <i class="fas fa-mobile-alt"></i>
+                            <span>Mobile</span>
+                        </button>
+                    </div>
+                    <div class="cash-payment" id="cashPayment" style="display: none;">
+                        <div class="input-group">
+                            <label>Amount Received:</label>
+                            <input type="number" id="amountReceived" placeholder="0.00">
+                        </div>
+                        <div class="change-display">
+                            <span>Change:</span>
+                            <span id="changeAmount">R0.00</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn-complete" id="completePayment" disabled>
+                        <i class="fas fa-check"></i> Complete Sale
+                    </button>
+                </div>
+            </div>
+        </div>
+
+       
+        <div class="success-message" id="successMessage">
+            <i class="fas fa-check-circle"></i>
+            <span>Payment Successful!</span>
+        </div>
+
+       
+        <div class="modal" id="receiptModal">
+            <div class="modal-content receipt-content">
+                <div class="modal-header">
+                    <h3><i class="fas fa-receipt"></i> Transaction Receipt</h3>
+                    <button class="close-modal" id="closeReceipt">&times;</button>
+                </div>
+                <div class="receipt-body" id="receiptBody">
+                    
+                </div>
+                <div class="modal-footer">
+                    <button class="btn-print" id="printReceipt">
+                        <i class="fas fa-print"></i> Print
+                    </button>
+                    <button class="btn-new-sale" id="newSale">
+                        <i class="fas fa-plus"></i> New Sale
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="till-point.js"></script>
+</body>
+</html>
